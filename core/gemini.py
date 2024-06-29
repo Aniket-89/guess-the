@@ -16,5 +16,5 @@ def generateFacts(state: str):
     without naming the {state}. The response should be in JSON format with the key 'facts' containing a list of facts."""
 
     response = model.generate_content(prompt)
-    print(response.text)
+    # print(response.text)
     return json.loads(response.text)['facts']

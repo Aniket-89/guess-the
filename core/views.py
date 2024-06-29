@@ -24,7 +24,7 @@ def index_view(request):
     form = ChatForm()
     message = ""
     last_attempt_time = request.session.get('last_attempt_time')
-
+    attempts = 0
     if last_attempt_time:
         last_attempt_time = timezone.datetime.fromisoformat(last_attempt_time)
         if timezone.now() - last_attempt_time < timedelta(days=1):
@@ -32,18 +32,12 @@ def index_view(request):
 
     context = {
         'form': form,
-        'message': message
+        'message': message,
+        'attempts': attempts
     }
     return render(request, 'core/index.html', context)
 
 def check_guess(request):
-    # hints = [
-    #     "Hint 1: Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-    #     "Hint 2: Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-    #     "Hint 3: Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-    #     "Hint 4: Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-    #     "Hint 5: Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
-    # ]
     
     incorrect_attempts = request.session.get('incorrect_attempts', 0)
     show_hints = []
@@ -72,6 +66,7 @@ def check_guess(request):
             'form': form,
             'show_hints': show_hints,
             'message': message,
+            'attempts': incorrect_attempts
         }
 
         return render(request, 'core/index.html', context)
