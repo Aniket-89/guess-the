@@ -2,7 +2,7 @@ import google.generativeai as genai
 import os
 import json
 
-genai.configure(api_key="AIzaSyCwzSAiSCtT6bU1ZUv0FQ715BuC1FpZq-c")
+genai.configure(api_key=os.environ.get('API_KEY'))
 
 model = genai.GenerativeModel('gemini-1.5-pro',
                               # Set the `response_mime_type` to output JSON
