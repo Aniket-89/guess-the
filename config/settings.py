@@ -87,7 +87,7 @@ else:
     DATABASES = {
         'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-            default='postgresql://postgres:postgres@localhost:5432/guess-the',
+            default='postgresql://postgres:postgres@localhost:5432/guessthe',
             conn_max_age=600
         )
     }
