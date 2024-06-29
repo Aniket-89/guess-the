@@ -8,8 +8,3 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls'))
 ]
-
-
-if settings.DEBUG:
-    # Serve static files during development
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,44 +1,130 @@
-<!-- templates/core/index.html -->
- {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guess the...</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
     <style>
-        
-    </style>
-</head>
-<body>
-    <main>
+      body {
+        background-color: #f5f5f5;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+        color: #444;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+        height: 100vh;
+      }
 
-    
-    <div class="container"> 
+      main {
+        width: 50%;
+        margin: auto;
+        /* height: 100%; */
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+      }
+
+      select {
+        background-color: white;
+        border-radius: 1rem;
+        border: 1.5px solid #444;
+        padding: 0.75rem;
+        font-size: 1rem;
+        color: #444;
+      }
+
+      button {
+        background-color: saddlebrown;
+        color: #f5f5f5;
+        font-weight: 500;
+        font-size: 1rem;
+        border-radius: 1rem;
+        border: none;
+        padding: 0.75rem 1.5rem;
+      }
+
+      h1 {
+        font-size: 3rem;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      .hints {
+        display: none;
+      }
+
+      .hints.visible {
+        display: flex;
+        flex-direction: column-reverse;
+      }
+
+      .hints p {
+        font-size: 1.5rem;
+        line-height: 1.5;
+        background-color: burlywood;
+        color: #444;
+        padding: 1rem;
+        border-left: 4px solid brown;
+      }
+
+      .input-form {
+        display: flex;
+        gap: 1rem;
+      }
+
+      .attempts-count {
+        font-size: 1.2rem;
+        font-weight: 500;
+      }
+
+      .message {
+        font-size: 1.5rem;
+        line-height: 1.5;
+        color: brown;
+      }
+
+      .container {
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container">
         <h1>Take a Guess</h1>
-            
-    {% if message %}
+
+        {% if message %}
         <div class="message">
-            <p>{{ message }}</p>
+          <p>{{ message }}</p>
         </div>
-    {% endif %}
-    {% if not message %}
-        <form action="{% url 'core:check_guess' %}" method="post" class="input-form">
-            {% csrf_token %}
-            <!-- <label for="id_select_field">Select an Option</label> -->
-            {{ form.select_field }}
-            <button type="submit">Submit</button>
+        {% endif %} {% if not message %}
+        <form
+          action="{% url 'core:check_guess' %}"
+          method="post"
+          class="input-form"
+        >
+          {% csrf_token %}
+          <!-- <label for="id_select_field">Select an Option</label> -->
+          {{ form.select_field }}
+          <button type="submit">Submit</button>
         </form>
-    {% endif %}
-        
-    </div>
-    <div class="attempts-count">Attempts: {{ attempts }}/5</div>
-    <div class="hints {% if show_hints %}visible{% endif %}">
+        {% endif %}
+      </div>
+      <div class="attempts-count">Attempts: {{ attempts }}/5</div>
+      <div class="hints {% if show_hints %}visible{% endif %}">
         {% for hint in show_hints %}
-            <p>``{{ hint }}``</p>
+        <p>``{{ hint }}``</p>
         {% endfor %}
-    </div>
-</main>
-</body>
+      </div>
+    </main>
+  </body>
 </html>
