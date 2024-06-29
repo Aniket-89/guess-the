@@ -1,0 +1,38 @@
+<!-- templates/core/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the State</title>
+    <style>
+        .hints {
+            display: none;
+        }
+        .hints.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body style="background-color: beige; display: grid; place-content: center;">
+    <h1 style="font-size: 34px;">Guess the state</h1>
+    {% if message %}
+        <div class="message">
+            <p>{{ message }}</p>
+        </div>
+    {% endif %}
+    {% if not message %}
+        <form action="{% url 'core:check_guess' %}" method="post">
+            {% csrf_token %}
+            <label for="id_select_field">Select an Option</label>
+            {{ form.select_field }}
+            <button type="submit">Submit</button>
+        </form>
+    {% endif %}
+    <div class="hints {% if show_hints %}visible{% endif %}">
+        {% for hint in show_hints %}
+            <p>{{ hint }}</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
