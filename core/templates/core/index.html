@@ -31,6 +31,7 @@
         justify-content: space-between;
         padding: 20px;
       }
+      
 
       select {
         background-color: white;
@@ -71,7 +72,7 @@
       .hints p {
         font-size: 1.5rem;
         line-height: 1.5;
-        background-color: burlywood;
+        background-color: rgb(141, 255, 196);
         color: #444;
         padding: 1rem;
         border-left: 4px solid brown;
@@ -81,6 +82,7 @@
         display: flex;
         gap: 1rem;
       }
+
 
       .attempts-count {
         font-size: 1.2rem;
@@ -93,6 +95,25 @@
         color: brown;
       }
 
+      @media screen and (max-width:1024px) {
+        body {
+          font-size: 12px;
+        }
+        main {
+          width: 80%;
+          gap: 3rem;
+        }
+        .input-form {
+            flex-direction: column;
+            justify-items: center;
+        }
+
+        .hints p {
+          font-size: 1rem;
+          padding: 0.25rem;
+        }
+      }
+
       .container {
       }
     </style>
@@ -100,6 +121,7 @@
   <body>
     <main>
       <div class="container">
+        <p>Try to guess the state. On every wrong guess, the hints will reveal themselves</p>
         <h1>Take a Guess</h1>
 
         {% if message %}

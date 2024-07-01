@@ -1,5 +1,6 @@
 # views.py
 import datetime
+import random
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -7,7 +8,17 @@ from django.core.cache import cache
 from .forms import ChatForm
 from .gemini import generateFacts
 
-TODAYS_STATE = "Kerala"  #changes every 12am
+STATES = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
+    "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim",
+    "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
+    "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep", "Delhi",
+    "Puducherry", "Jammu and Kashmir", "Ladakh"
+]
+TODAYS_STATE = random.choice(STATES)  #changes every 12am
 
 state_facts = []
 def get_todays_facts():
