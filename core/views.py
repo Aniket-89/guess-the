@@ -18,35 +18,47 @@ STATES = [
     "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep", "Delhi",
     "Puducherry", "Jammu and Kashmir", "Ladakh"
 ]
-TODAYS_STATE = ""  #changes every 12am
+# TODAYS_STATE = ""  #changes every 12am
 
 state_facts = []
 def get_todays_facts():
     current_date = datetime.now().date()
     facts_cache_key = f"facts_{current_date}"
-
+    state_cache_key = f"state_{current_date}"
+    state = cache.get(state_cache_key)
     facts = cache.get(facts_cache_key)
+    if not state:
+        state = random.choice(STATES)
     if not facts:
         global TODAYS_STATE
         TODAYS_STATE = random.choice(STATES)
+        
         facts = generateFacts(TODAYS_STATE)
+        cache.set(state_cache_key, state, timeout=24*60*60)  # Cache for 24 hours
         cache.set(facts_cache_key, facts, timeout=24*60*60)  # Cache for 24 hours
 
-    return facts
+    return facts, state
+
+
 def index_view(request):
+    hints, state = get_todays_facts()
+    
     form = ChatForm()
     message = ""
     last_attempt_time = request.session.get('last_attempt_time')
     attempts = 0
     if last_attempt_time:
+        show_hints = hints
         last_attempt_time = timezone.datetime.fromisoformat(last_attempt_time)
         if timezone.now() - last_attempt_time < timedelta(days=1):
             message = "You have already attempted today. Please try again tomorrow."
 
     context = {
         'form': form,
+        'state': state,
         'message': message,
-        'attempts': attempts
+        'show_hints': show_hints,
+        'attempts': attempts,
     }
     return render(request, 'core/index.html', context)
 

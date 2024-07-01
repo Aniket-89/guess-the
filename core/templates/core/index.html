@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Guess the...</title>
+    <title>Guess the</title>
     <style>
       body {
         background-color: #f5f5f5;
@@ -52,6 +52,10 @@
         padding: 0.75rem 1.5rem;
       }
 
+      button:hover {
+        cursor: pointer;
+      }
+
       h1 {
         font-size: 3rem;
         line-height: 1.5;
@@ -59,6 +63,24 @@
         padding: 0;
         text-align: center;
       }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #444;
+      }
+
+      .popup {
+        display: flex;
+        border-radius: 1rem;
+        padding: 1rem 2rem;
+        background-color: antiquewhite;
+        flex-direction: column;
+        position: absolute;
+        bottom: 5px;
+        left: 40%;
+        gap:2rem;
+      }
+      
 
       .hints {
         display: none;
@@ -80,6 +102,7 @@
 
       .input-form {
         display: flex;
+        justify-content: center;
         gap: 1rem;
       }
 
@@ -95,6 +118,10 @@
         color: brown;
       }
 
+      .instructions {
+        font-size: 1.1rem;
+      }
+
       @media screen and (max-width:1024px) {
         body {
           font-size: 12px;
@@ -105,7 +132,6 @@
         }
         .input-form {
             flex-direction: column;
-            justify-items: center;
         }
 
         .hints p {
@@ -121,12 +147,26 @@
   <body>
     <main>
       <div class="container">
-        <p>Try to guess the state. On every wrong guess, the hints will reveal themselves</p>
-        <h1>Take a Guess</h1>
+        <!-- <div class="popup absolute bottom-0 left-1/2 ">
+          <p class="text-3xl font-bold">This site uses cookies to work properly</p>
+          <div class="">
+            <button class="cookies-btn">Accept all</button>
+            <button class="cookies-btn">Accept essential</button>
+          </div>
+        </div> -->
+        <header class="header">
+            <h2>State of the Day</h2>
+            <p>help</p>
+            <!-- <p>settings</p> -->
+        </header>
+
+        <p class="instructions">Try to guess the correct state within 5 attempts.</p>
+        <h1>Guess The State</h1>
 
         {% if message %}
         <div class="message">
           <p>{{ message }}</p>
+          <p>Today's State: {{ state }}</p>
         </div>
         {% endif %} {% if not message %}
         <form
@@ -143,9 +183,10 @@
       </div>
       <div class="attempts-count">Attempts: {{ attempts }}/5</div>
       <div class="hints {% if show_hints %}visible{% endif %}">
-        {% for hint in show_hints %}
-        <p>``{{ hint }}``</p>
-        {% endfor %}
+          {% for hint in show_hints %}
+          <p>``{{ hint }}``</p>
+          {% endfor %}
+          <h3>Hints - </h3>
       </div>
     </main>
   </body>
