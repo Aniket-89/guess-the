@@ -18,7 +18,7 @@ STATES = [
     "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep", "Delhi",
     "Puducherry", "Jammu and Kashmir", "Ladakh"
 ]
-TODAYS_STATE = random.choice(STATES)  #changes every 12am
+TODAYS_STATE = ""  #changes every 12am
 
 state_facts = []
 def get_todays_facts():
@@ -27,6 +27,8 @@ def get_todays_facts():
 
     facts = cache.get(facts_cache_key)
     if not facts:
+        global TODAYS_STATE
+        TODAYS_STATE = random.choice(STATES)
         facts = generateFacts(TODAYS_STATE)
         cache.set(facts_cache_key, facts, timeout=24*60*60)  # Cache for 24 hours
 
