@@ -84,19 +84,27 @@
 
       .hints {
         display: none;
+        width: 80%;
+        /* height: 100%; */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 1rem;
       }
 
       .hints.visible {
         display: flex;
         flex-direction: column-reverse;
+        justify-content: center;
       }
 
       .hints p {
-        font-size: 1.5rem;
-        line-height: 1.5;
-        background-color: rgb(141, 255, 196);
+        font-size: 1.2rem;
+        line-height: 1.2;
+        font-weight: 500    ;
+        background-color: rgb(238, 225, 196);
         color: #444;
-        padding: 1rem;
+        text-align: center;
+        padding: 0.5rem;
         border-left: 4px solid brown;
       }
 
@@ -110,16 +118,18 @@
       .attempts-count {
         font-size: 1.2rem;
         font-weight: 500;
+        text-align: center;
       }
 
       .message {
         font-size: 1.5rem;
         line-height: 1.5;
+        text-align: center;
         color: brown;
       }
 
       .instructions {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
       }
 
       @media screen and (max-width:1024px) {
@@ -127,16 +137,35 @@
           font-size: 12px;
         }
         main {
-          width: 80%;
+          width: 90%;
           gap: 3rem;
+          padding: 0;
+          margin: 0.25rem auto;
         }
         .input-form {
             flex-direction: column;
+        }
+        .hints {
+            width: 90%;
+            padding: 0;
+        }
+        h1 {
+            font-size: 2.5rem;
         }
 
         .hints p {
           font-size: 1rem;
           padding: 0.25rem;
+        }
+        .message {
+          font-size: 1.2rem; 
+        }
+        .message .answer-text {
+            color: blueviolet;
+        }
+        .message .answer-text .answer {
+            color: rgb(190, 129, 36);
+            font-weight: 500;
         }
       }
 
@@ -161,12 +190,12 @@
         </header>
 
         <p class="instructions">Try to guess the correct state within 5 attempts.</p>
-        <h1>Guess The State</h1>
+        <h1 class="main-header">Guess The State</h1>
 
         {% if message %}
         <div class="message">
           <p>{{ message }}</p>
-          <p>Today's State: {{ state }}</p>
+          <p class="answer-text">Today's State: <span class="answer">{{ state }}</span></p>
         </div>
         {% endif %} {% if not message %}
         <form
@@ -180,8 +209,9 @@
           <button type="submit">Submit</button>
         </form>
         {% endif %}
+            <div class="attempts-count">Attempts: {{ attempts }}/6</div>
       </div>
-      <div class="attempts-count">Attempts: {{ attempts }}/5</div>
+
       <div class="hints {% if show_hints %}visible{% endif %}">
           {% for hint in show_hints %}
           <p>``{{ hint }}``</p>

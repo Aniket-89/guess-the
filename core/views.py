@@ -18,10 +18,12 @@ STATES = [
     "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep", "Delhi",
     "Puducherry", "Jammu and Kashmir", "Ladakh"
 ]
-# TODAYS_STATE = ""  #changes every 12am
-
+TODAYS_STATE = ""  #changes every 12am
+count = 0
 state_facts = []
 def get_todays_facts():
+    global count
+    global TODAYS_STATE
     current_date = datetime.now().date()
     facts_cache_key = f"facts_{current_date}"
     state_cache_key = f"state_{current_date}"
@@ -32,10 +34,10 @@ def get_todays_facts():
         cache.set(state_cache_key, state, timeout=24*60*60)  # Cache for 24 hours
 
     if not facts:
-        # global TODAYS_STATE
-        # TODAYS_STATE = random.choice(STATES)
-        
-        facts = generateFacts(state)
+        TODAYS_STATE = state
+        facts = generateFacts(TODAYS_STATE)
+        count += 1
+        print(count)
         cache.set(facts_cache_key, facts, timeout=24*60*60)  # Cache for 24 hours
 
     return facts, state
@@ -48,6 +50,7 @@ def index_view(request):
     message = ""
     last_attempt_time = request.session.get('last_attempt_time')
     attempts = 0
+    show_hints = []
     if last_attempt_time:
         show_hints = hints
         last_attempt_time = timezone.datetime.fromisoformat(last_attempt_time)
@@ -64,9 +67,11 @@ def index_view(request):
     return render(request, 'core/index.html', context)
 
 def check_guess(request):
-    
+
     incorrect_attempts = request.session.get('incorrect_attempts', 0)
     show_hints = []
+    hints = get_todays_facts()[0]
+
     message = ""
 
     if request.method == 'POST':
@@ -76,13 +81,13 @@ def check_guess(request):
             if user_choice != TODAYS_STATE:
                 incorrect_attempts += 1
                 request.session['incorrect_attempts'] = incorrect_attempts
-                hints = get_todays_facts()
                 show_hints = hints[:incorrect_attempts]
-                if incorrect_attempts >= 5:
+                if incorrect_attempts >= 6:
                     message = "You failed! The correct state was {}.".format(TODAYS_STATE)
                     request.session['incorrect_attempts'] = 0  # Reset attempts after failure
             else:
                 message = "You guessed correct!"
+                show_hints = hints
                 request.session['incorrect_attempts'] = 0  # Reset on correct guess
             request.session['last_attempt_time'] = timezone.now().isoformat()
         else:
@@ -92,7 +97,8 @@ def check_guess(request):
             'form': form,
             'show_hints': show_hints,
             'message': message,
-            'attempts': incorrect_attempts
+            'attempts': incorrect_attempts,
+            'state': TODAYS_STATE
         }
 
         return render(request, 'core/index.html', context)
