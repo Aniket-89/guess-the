@@ -29,12 +29,13 @@ def get_todays_facts():
     facts = cache.get(facts_cache_key)
     if not state:
         state = random.choice(STATES)
-    if not facts:
-        global TODAYS_STATE
-        TODAYS_STATE = random.choice(STATES)
-        
-        facts = generateFacts(TODAYS_STATE)
         cache.set(state_cache_key, state, timeout=24*60*60)  # Cache for 24 hours
+
+    if not facts:
+        # global TODAYS_STATE
+        # TODAYS_STATE = random.choice(STATES)
+        
+        facts = generateFacts(state)
         cache.set(facts_cache_key, facts, timeout=24*60*60)  # Cache for 24 hours
 
     return facts, state
